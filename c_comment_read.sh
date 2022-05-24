@@ -34,9 +34,10 @@ EOF_COMMENT
 # usageを表示
 function usage {
     cat << EOM
-Usage: $(basename "$0") [-h] [-l] c_filename ...
-  -h    Display help
-  -l    with number of line
+Usage: $(basename "$0") [-h] [-l] [-s <time_ms>] c_filename ...
+  -h           Display help
+  -l           with number of line
+  -s           sleep for specified time (number)
 EOM
 
   exit 2
@@ -45,6 +46,8 @@ EOM
 # プログラム読み上げ処理
 function c_comment_read() {
     file=$1
+    sleep_ms=$2
+
     # コメントの行番号と文字列を整理する
     strings=()
     numbers=()
@@ -81,6 +84,7 @@ EOS
             fi
         fi
         line_count=`expr $line_count + 1`
+        sleep $sleep_ms
     done
 }
 
@@ -104,15 +108,25 @@ fi
 
 # 引数用の変数
 number_of_line=false
+sleep_ms=0
 args_count=0
 args=($@)
 
 # 引数別の処理
-while getopts ":h:l" opt_key; do
+while getopts 'hls:' opt_key; do
     case "$opt_key" in
         'l')
             number_of_line=true
             args_count=`expr ${args_count} + 1`
+            ;;
+        's')
+            echo "${OPTARG}" | grep -E "[0-9]+\.[0-9]+|[0-9]+" > /dev/null 2>&1
+            if [ $? -eq 0 ]; then
+                sleep_ms=${OPTARG}
+            else
+                usage
+            fi
+            args_count=`expr ${args_count} + 2`
             ;;
         'h'|*)
             usage
@@ -124,7 +138,7 @@ done
 for file in "${args[@]:${args_count}}"; do
     # ファイルが存在する時
     if [ -f $file ]; then
-        c_comment_read $file
+        c_comment_read $file $sleep_ms
     else
         # 存在しない時
         echo "$file は存在しません"
