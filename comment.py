@@ -315,8 +315,7 @@ def main():
     analyzer = CommentAnalyzer()
     string = stdin_string()
     analyzer.run(string)
-    for each in analyzer.get_result():
-        print(each)
+    sys.stdout.write(os.linesep.join(map(str, analyzer.get_result())))
 
 if __name__ == "__main__":
     sys.exit(main())
