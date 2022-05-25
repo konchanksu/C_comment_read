@@ -47,6 +47,7 @@ EOM
 function c_comment_read() {
     file=$1
     sleep_ms=$2
+    python_file=`find . -name comment.py`
 
     # コメントの行番号と文字列を整理する
     strings=()
@@ -56,7 +57,7 @@ function c_comment_read() {
         strings+=("${string}")
         numbers+=(${number})
     done << EOS
-    $(cat "$file" | python comment.py)
+    $(cat "$file" | python "$python_file")
 EOS
 
     # echo ${strings[@]}
@@ -93,8 +94,9 @@ if [ $# -eq 0 ]; then
     usage
 fi
 
+python_file=`find . -name comment.py`
 # 必要なpythonプログラムの存在を確かめる
-if [ ! -f 'comment.py' ]; then
+if [ ! -f $python_file ]; then
     echo '内部処理を行うpythonプログラムが存在しません'
     exit 1
 fi
