@@ -17,8 +17,8 @@ all:
 	@:
 
 clean:
-	for each in ${PYCS} ; do echo "rm -f $${each}" ; rm -f $${each} ; done
-	for each in ${PYCACHE} ; do echo "rm -f $${each}" ; rm -rf $${each} ; done
+	@for each in ${PYCS} ; do echo "rm -f $${each}" ; rm -f $${each} ; done
+	@for each in ${PYCACHE} ; do echo "rm -f $${each}" ; rm -rf $${each} ; done
 	@if [ -e $(LINTRST) ] ; then echo "rm -f $(LINTRST)" ; rm -f $(LINTRST) ; fi
 	@if [ -e MANIFEST ] ; then echo "rm -f MANIFEST" ; rm -f MANIFEST ; fi
 	@find . -name ".DS_Store" -exec rm {} ";" -exec echo rm -f {} ";"
