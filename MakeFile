@@ -1,0 +1,9 @@
+PYTHON	= python
+PYDOC	= pydoc
+BASE	= comment
+EXT	    = py
+PACKAGE = packages
+WORKDIR	= ./
+
+pydoc:
+	(sleep 3 ; open http://localhost:9999/$(PACKAGE).html) & $(PYDOC) -p 9999
