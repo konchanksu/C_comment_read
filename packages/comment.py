@@ -74,6 +74,7 @@ class CommentAnalyzer():
         """ コンストラクタ """
         self.state: self.CommentState = self.CommentState.DEFAULT
         self.multiple_comment_state: self.MultipleCommentState = self.MultipleCommentState.NONE
+        self.back_slash = False
         self.comment: List[str] = []
         self.comments: List[StringAndNumberOfLine] = []
         self._state_func_dictionary = {
@@ -157,8 +158,12 @@ class CommentAnalyzer():
         Args:
             char (str): 入力された一文字
         """
-        if char == CommentAnalyzer.DOUBLE_QUOTE:
+        if self.back_slash:
+            self.back_slash = False
+        elif char == CommentAnalyzer.DOUBLE_QUOTE:
             self._change_for_default_state()
+        elif char == CommentAnalyzer.BACK_SLASH:
+            self.back_slash = True
 
     def _in_single_quarts(self, char: str):
         """
@@ -167,8 +172,12 @@ class CommentAnalyzer():
         Args:
             char (str): 入力された一文字
         """
-        if char == CommentAnalyzer.SINGLE_QUOTE:
+        if self.back_slash:
+            self.back_slash = False
+        elif char == CommentAnalyzer.SINGLE_QUOTE:
             self._change_for_default_state()
+        elif char == CommentAnalyzer.BACK_SLASH:
+            self.back_slash = True
 
     def _in_singular_comment(self, char: str):
         """
@@ -251,16 +260,19 @@ class CommentAnalyzer():
     def _change_for_singular_comment_state(self):
         """ 1行コメント状態への遷移 """
         self.state = self.CommentState.IN_SINGULAR_COMMENT
+        self.back_slash = False
         self.comment.append("")
 
     def _change_for_multiple_comment_state(self):
         """ 複数行コメント状態への遷移 """
         self.state = self.CommentState.IN_MULTIPLE_COMMENT
+        self.back_slash = False
         self.multiple_comment_state = self.MultipleCommentState.ASTERISK
         self.comment.append("")
 
     def _change_for_default_state(self):
         """ 通常状態への遷移 """
+        self.back_slash = False
         self.multiple_comment_state = self.MultipleCommentState.NONE
         self.state = self.CommentState.DEFAULT
 
@@ -272,46 +284,62 @@ class TestCommentAnalyzer(unittest.TestCase):
     Args:
         unittest: ユニットテストクラス
     """
+    def assert_comment_analyzer(self, analyze_code, right_results):
+        """
+        コメントアナライザーを用いたアサーションのメソッド
+
+        Args:
+            analyze_code (str): 解析する文字列
+            right_results (List(List(str))): 想定されるanalyzer.get_result()で返却される文字列
+        """
+        analyzer = CommentAnalyzer()
+        analyzer.run(analyze_code)
+        self.assertEqual(right_results, list(map(lambda x: x.strings, analyzer.get_result())))
+
     def test__通常コメントが解析できる(self):
         """
         単行コメント解析テスト
         """
-        analyzer = CommentAnalyzer()
-        analyzer.run("// コメントです")
-        self.assertEqual([" コメントです"], analyzer.get_result()[0].strings)
+        self.assert_comment_analyzer("// コメントです", [[" コメントです"]])
 
     def test__複数行コメントが解析できる(self):
         """
         複数行コメント解析テスト
         """
-        analyzer = CommentAnalyzer()
-        analyzer.run(
-"""
+        self.assert_comment_analyzer("""
 ああああ
 /*
  * 複数行コメント
  * hogehoge
  */
 いいいい
-"""
-        )
-        self.assertEqual(["複数行コメント"], analyzer.get_result()[0].strings)
-        self.assertEqual(["hogehoge"], analyzer.get_result()[1].strings)
+""", [["複数行コメント"], ["hogehoge"]])
 
     def test__文字列が含まれた時の処理_正しく解析できる(self):
         """
         文字列解析テスト
         """
-        string_single = "'aaaa//test/*  */'//test"
-        string_double = '"aaaa//test/*  */"//test'
+        self.assert_comment_analyzer(
+            "'aaaa//test/*  */'//test",
+            [["test"]]
+        )
+        self.assert_comment_analyzer(
+            '"aaaa//test/*  */"//test',
+            [["test"]]
+        )
 
-        analyzer = CommentAnalyzer()
-        analyzer.run(string_single)
-        self.assertEqual(["test"], analyzer.get_result()[0].strings)
-
-        analyzer.reset()
-        analyzer.run(string_double)
-        self.assertEqual(["test"], analyzer.get_result()[0].strings)
+    def test__エスケープ文字が含まれた時の処理_正しく解析できる(self):
+        """
+        文字列解析テスト
+        """
+        self.assert_comment_analyzer(
+            "'\\'// これはコメントでない'",
+            []
+        )
+        self.assert_comment_analyzer(
+            '"\\"// これはコメントでない"',
+            []
+        )
 
 def stdin_string() -> str:
     """ 標準入力から文字列をとってきます """
