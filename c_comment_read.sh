@@ -46,10 +46,6 @@ EOM
 
 # プログラム読み上げ処理
 function c_comment_read() {
-    file=$1
-    sleep_ms=$2
-    python_file=`find . -name comment.py`
-
     # コメントの行番号と文字列を整理する
     strings=()
     numbers=()
@@ -141,7 +137,7 @@ done
 for file in "${args[@]:${args_count}}"; do
     # ファイルが存在する時
     if [ -f $file ]; then
-        c_comment_read $file $sleep_ms
+        c_comment_read
     else
         # 存在しない時
         echo "$file は存在しません"
