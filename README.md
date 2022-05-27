@@ -30,7 +30,7 @@ KONDO Hidemasa
 ## Usage
 c_comment_read.sh [-h] [-l] [-s <time_ms>] c_filename ...  
 
-## Args and options
+### Args and options
 **-h**  
 > Display help  
 
@@ -43,7 +43,7 @@ c_comment_read.sh [-h] [-l] [-s <time_ms>] c_filename ...
 **c_filename**  
 > C source code file
 
-## Example
+### Example
 ```terminal
 $ ./c_comment_read.sh c_programs/tmp.c
 #include <stdio.h>
