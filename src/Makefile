@@ -6,7 +6,8 @@ PYLINT	= pylint
 PYUTEST = unittest
 
 BASE	= comment
-C_FILE  = tmp.c
+C_DIR   = ../c_programs/
+C_FILE  = $(C_DIR)tmp.c
 EXT	    = py
 PACKAGE = packages
 PKGTDIR	= $(shell echo $(PACKAGE) | cut -d '.' -f1)
