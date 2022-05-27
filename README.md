@@ -4,6 +4,10 @@ C言語ソースコードコメント読み上げプログラム
 ## バージョン
 0.9.1
 
+## 推奨バージョンOS
+MacOS 12.4
+他OSは非対応
+
 ## 作成者
 近藤 英雅 (KONDO Hidemasa)
 
@@ -18,7 +22,7 @@ C言語ソースコード読み上げの処理を行うshell script
 テスト用のC言語ソースコード
 
 ## 書式
-./c_comment_read.sh [-h] [-l] c_filename ...
+c_comment_read.sh [-h] [-l] [-s <time_ms>] c_filename ...  
 
 ## 引数とオプション
 **-h**  
@@ -26,6 +30,9 @@ C言語ソースコード読み上げの処理を行うshell script
 
 **-l**  
 > with number of line  
+
+**-s**
+> sleep for specified time (number)
 
 **c_filename**  
 > C言語のソースコードファイル  
