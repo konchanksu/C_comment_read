@@ -1,6 +1,4 @@
-# c_comment_read
-read aloud C source code comments
-
+# read aloud C source code comments: c_comment_read
 ## Version
 0.9.1
 
