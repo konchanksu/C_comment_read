@@ -15,7 +15,7 @@ C言語ソースコードコメント読み上げプログラム
 ## Author
 KONDO Hidemasa
 
-## 内容物
+## Files
 ```
 .
 ├── README.md          # readme!
