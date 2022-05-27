@@ -1,4 +1,8 @@
 # Cプログラム
 *.c
 
+# Python周り
 __pycache__
+
+# VSCode周り
+.vscode
