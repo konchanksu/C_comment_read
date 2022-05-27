@@ -41,7 +41,7 @@ c_comment_read.sh [-h] [-l] [-s <time_ms>] c_filename ...
 > sleep for specified time (number)
 
 **c_filename**  
-> C言語のソースコードファイル  
+> C source code file
 
 ## Example
 ```terminal
