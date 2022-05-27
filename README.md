@@ -1,30 +1,38 @@
 # c_comment_read
 C言語ソースコードコメント読み上げプログラム
 
-## バージョン
+## Version
 0.9.1
 
-## OS
-MacOS 12.4
-他OSは非対応
+## System Requirements
+### Macintosh  
+12.0 or higher
+### Python
+3.8 or higher
+### Bash
+3.2 or higher  
 
-## 作成者
-近藤 英雅 (KONDO Hidemasa)
+## Author
+KONDO Hidemasa
 
 ## 内容物
-- README.txt  
-これ
-- c_comment_read.sh  
-C言語ソースコード読み上げの処理を行うshell script
-- comment.py  
-ソースコード内のコメントとその行番号を列挙する内部処理
-- tmp.c  
-テスト用のC言語ソースコード
+```
+.
+├── README.md          # readme!
+├── c_comment_read.sh  # main file
+├── c_programs
+│   └── tmp.c          # soruce code for operation check
+└── src
+    ├── MANIFEST.in    # python's MANIFEST File
+    ├── Makefile       # python's build file
+    └── packages
+        └── comment.py # python file (comment analyzer)
+```
 
-## 書式
+## Usage
 c_comment_read.sh [-h] [-l] [-s <time_ms>] c_filename ...  
 
-## 引数とオプション
+## Args and options
 **-h**  
 > Display help  
 
@@ -37,8 +45,8 @@ c_comment_read.sh [-h] [-l] [-s <time_ms>] c_filename ...
 **c_filename**  
 > C言語のソースコードファイル  
 
-## 実例
-```
+## Example
+```terminal
 $ ./c_comment_read.sh c_programs/tmp.c
 #include <stdio.h>
 
