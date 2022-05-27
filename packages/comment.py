@@ -47,6 +47,13 @@ class CommentAnalyzer():
     C言語のコメントの解析を行うクラス
     """
     EMPTY_STRING = (" ", "\t")
+    ASTERISK = "*"
+    SINGLE_QUOTE = "'"
+    DOUBLE_QUOTE = '"'
+    SLASH = "/"
+    BACK_SLASH = "\\"
+    LINE_SEP = os.linesep
+
     class CommentState(Enum):
         """ 文字 状態 """
         DEFAULT = 1
@@ -132,13 +139,13 @@ class CommentAnalyzer():
         Args:
             char (str): 入力された一文字
         """
-        if char == "/":
+        if char == CommentAnalyzer.SLASH:
             self._change_for_singular_comment_state()
-        elif char == "*":
+        elif char == CommentAnalyzer.ASTERISK:
             self._change_for_multiple_comment_state()
-        elif char == "'":
+        elif char == CommentAnalyzer.SINGLE_QUOTE:
             self.state = self.CommentState.IN_SINGLE_QUARTS
-        elif char == '"':
+        elif char == CommentAnalyzer.DOUBLE_QUOTE:
             self.state = self.CommentState.IN_DOUBLE_QUARTS
         else:
             self.state = self.CommentState.DEFAULT
@@ -150,8 +157,8 @@ class CommentAnalyzer():
         Args:
             char (str): 入力された一文字
         """
-        if char == '"':
-            self.state = self.CommentState.DEFAULT
+        if char == CommentAnalyzer.DOUBLE_QUOTE:
+            self._change_for_default_state()
 
     def _in_single_quarts(self, char: str):
         """
@@ -160,8 +167,8 @@ class CommentAnalyzer():
         Args:
             char (str): 入力された一文字
         """
-        if char == "'":
-            self.state = self.CommentState.DEFAULT
+        if char == CommentAnalyzer.SINGLE_QUOTE:
+            self._change_for_default_state()
 
     def _in_singular_comment(self, char: str):
         """
@@ -170,7 +177,7 @@ class CommentAnalyzer():
         Args:
             char (str): 入力された一文字
         """
-        if char == os.linesep:
+        if char == CommentAnalyzer.LINE_SEP:
             self._change_for_default_state()
             return
         self.comment[-1] += char
@@ -199,7 +206,7 @@ class CommentAnalyzer():
         if char == "*":
             self.multiple_comment_state = self.MultipleCommentState.ASTERISK
             self.comment[-1] += char
-        elif char == os.linesep:
+        elif char == CommentAnalyzer.LINE_SEP:
             self.multiple_comment_state = self.MultipleCommentState.LINE_SEP
         else:
             self.comment[-1] += char
@@ -228,13 +235,13 @@ class CommentAnalyzer():
         Args:
             char (str): 文字
         """
-        if char == "/":
+        if char == CommentAnalyzer.SLASH:
             self._change_for_default_state()
-        elif char == "*":
+        elif char == CommentAnalyzer.ASTERISK:
             pass
         elif char in CommentAnalyzer.EMPTY_STRING:
             pass
-        elif char == os.linesep:
+        elif char == CommentAnalyzer.LINE_SEP:
             self.multiple_comment_state = self.MultipleCommentState.LINE_SEP
         else:
             self.comment[-1] += char
