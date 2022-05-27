@@ -21,7 +21,7 @@ int main(void) {
 プログラムの読み上げを終了します。
 ===================================================
 
-$ ./c_comment_read.sh tmp.c
+$ ./c_comment_read.sh c_programs/tmp.c
 #include <stdio.h>
 
 // プログラムを読み上げます (このコメントは音声で読み上げられる)

@@ -39,7 +39,7 @@ c_comment_read.sh [-h] [-l] [-s <time_ms>] c_filename ...
 
 ## 実例
 ```
-$ ./c_comment_read.sh tmp.c
+$ ./c_comment_read.sh c_programs/tmp.c
 #include <stdio.h>
 
 // プログラムを読み上げます
