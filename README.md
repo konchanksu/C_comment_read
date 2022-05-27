@@ -1,5 +1,5 @@
 # c_comment_read
-C言語ソースコードコメント読み上げプログラム
+read aloud C source code
 
 ## Version
 0.9.1
