@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # 作成：2022/05/24：近藤 英雅 (KONDO HIDEMASA)
 # 修正：2022/05/24：近藤 英雅 (KONDO HIDEMASA)
